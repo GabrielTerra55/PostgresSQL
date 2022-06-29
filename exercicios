@@ -1,0 +1,26 @@
+CREATE TABLE aluno(
+	id SERIAL PRIMARY KEY,
+	nome VARCHAR(255),
+	cpf integer NOT NULL UNIQUE,
+	nascimento DATE
+);
+
+CREATE TABLE categoria(
+	id SERIAL PRIMARY KEY,
+	categoria VARCHAR(255)
+);
+
+CREATE TABLE curso(
+	id SERIAL PRIMARY KEY,
+	nome VARCHAR (255) UNIQUE,
+	categoria_id INTEGER,
+	FOREIGN KEY (categoria_id)
+	REFERENCES categoria(id)
+);
+
+INSERT INTO aluno (nome,cpf,nascimento) VALUES(
+	'gabriel terra', 
+	12950091610,
+	'2000-05-01'
+);
+
