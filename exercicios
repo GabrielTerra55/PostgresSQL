@@ -3,7 +3,7 @@ CREATE DATABASE CURSOS
 CREATE TABLE aluno(
 	id SERIAL PRIMARY KEY,
 	nome VARCHAR(255),
-	cpf integer NOT NULL UNIQUE,
+	cpf NUMERIC NOT NULL UNIQUE,
 	nascimento DATE
 );
 
@@ -21,8 +21,12 @@ CREATE TABLE curso(
 );
 
 INSERT INTO aluno (nome,cpf,nascimento) VALUES(
-	'gabriel terra', 
-	12950091610,
+	'Josué Assis', 
+	69909054094,
 	'2000-05-01'
 );
+
+
+
+
 
