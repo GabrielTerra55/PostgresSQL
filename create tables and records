@@ -22,9 +22,12 @@ CREATE TABLE curso(
 	REFERENCES categoria(id)
 );
 
+/* CRIANDO UMA TABELA COM REFERENCIA A VALORES DE OUTRA TABELA (CHAVE ESTRANGEIRA) */
+
 CREATE TABLE aluno_curso (
 	aluno_id INTEGER NOT NULL,
 	curso_id INTEGER NOT NULL,
+	PRIMARY KEY (aluno_id, curso_id),
 	FOREIGN KEY (aluno_id) REFERENCES aluno(id),
 	FOREIGN KEY (curso_id) REFERENCES curso(id)
 );
@@ -64,6 +67,9 @@ SELECT aluno.nome, COUNT(curso.id) as "numero de cursos" FROM aluno_curso
 	JOIN aluno on aluno.id = aluno_curso.aluno_id
 GROUP BY 1;
 
+/* FILTRO DE BUSCA ONDE MOSTRARA VALORES DIFERENTES DE ID = 1 E COM VALORES OS QUAIS O NOME NÃO SE INICIA COM 'J' */
+
+SELECT nome FROM curso WHERE categoria_id <> 1 AND nome NOT LIKE 'J%';
 
 
 
