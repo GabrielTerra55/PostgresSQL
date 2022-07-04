@@ -1,3 +1,5 @@
+/* CRIAÇÃO DAS TABELAS */
+
 CREATE DATABASE CURSOS
 
 CREATE TABLE aluno(
@@ -20,11 +22,48 @@ CREATE TABLE curso(
 	REFERENCES categoria(id)
 );
 
+CREATE TABLE aluno_curso (
+	aluno_id INTEGER NOT NULL,
+	curso_id INTEGER NOT NULL,
+	FOREIGN KEY (aluno_id) REFERENCES aluno(id),
+	FOREIGN KEY (curso_id) REFERENCES curso(id)
+);
+
 INSERT INTO aluno (nome,cpf,nascimento) VALUES(
 	'Josué Assis', 
 	69909054094,
 	'2000-05-01'
 );
+
+INSERT INTO categoria VALUES 
+	(1,'FRONT-END'),(2,'PROGRAMAÇÃO'),
+	(3,'BANCO DE DADOS'),(4,'ADMINISTRAÇÃO');
+
+INSERT INTO curso VALUES 
+	(1,'Python',2),(2,'JAVA',2),(3,'HTML',1),
+	(4,'CSS',1),(5,'MYSQL',3),(6,'POSTGRES',3),
+	(7,'RUBY',2),(8,'Gestão de Projetos',4),
+	(9,'JavaScript',1);
+
+
+
+INSERT INTO aluno_curso VALUES
+(1,1),(1,6),(1,8);
+
+/* MOSTRA TODOS OS ALUNOS E OS CURSOS QUE ESTÃO CADASTRADOS RESPECTIVAMENTES*/
+
+SELECT * FROM aluno_curso
+	JOIN curso on curso.id = aluno_curso.curso_id
+	JOIN aluno on aluno.id = aluno_curso.aluno_id
+;
+
+/* MOSTRA O(OS) ALUNO(OS) E EM QUANTOS CURSOS ESTÁ CADASTRADO */
+
+SELECT aluno.nome, COUNT(curso.id) as "numero de cursos" FROM aluno_curso
+	JOIN curso on curso.id = aluno_curso.curso_id
+	JOIN aluno on aluno.id = aluno_curso.aluno_id
+GROUP BY 1;
+
 
 
 
