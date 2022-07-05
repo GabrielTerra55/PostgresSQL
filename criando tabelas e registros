@@ -5,8 +5,9 @@ CREATE DATABASE CURSOS
 CREATE TABLE aluno(
 	id SERIAL PRIMARY KEY,
 	nome VARCHAR(255),
-	cpf NUMERIC NOT NULL UNIQUE,
-	nascimento DATE
+	data_nascimento DATE,
+	cpf NUMERIC NOT NULL UNIQUE
+	
 );
 
 CREATE TABLE categoria(
@@ -28,15 +29,33 @@ CREATE TABLE aluno_curso (
 	aluno_id INTEGER NOT NULL,
 	curso_id INTEGER NOT NULL,
 	PRIMARY KEY (aluno_id, curso_id),
-	FOREIGN KEY (aluno_id) REFERENCES aluno(id),
-	FOREIGN KEY (curso_id) REFERENCES curso(id)
+	FOREIGN KEY (aluno_id) 
+	REFERENCES aluno(id),
+	FOREIGN KEY (curso_id) 
+	REFERENCES curso(id)
 );
 
 INSERT INTO aluno (nome,cpf,nascimento) VALUES(
 	'Josué Assis', 
-	69909054094,
-	'2000-05-01'
+	'1999-07-12',
+	12950091610
 );
+
+
+INSERT INTO aluno (nome,data_nascimento,cpf) VALUES(
+	'Josué Ferreira',
+	'1998-03-10',
+	07659034073
+),(
+	'Edgar Marcedo',
+	'2001-03-01',
+	23866728085
+),(
+	'Tiago Nogueira',
+	'2002-09-20',
+	31151207020
+);
+
 
 INSERT INTO categoria VALUES 
 	(1,'FRONT-END'),(2,'PROGRAMAÇÃO'),
@@ -53,6 +72,10 @@ INSERT INTO curso VALUES
 INSERT INTO aluno_curso VALUES
 (1,1),(1,6),(1,8);
 
+INSERT INTO aluno_curso VALUES
+(1,1),(1,6),(1,8),(2,2),(2,5),(3,3),(3,4),(3,8),(4,5),(4,7);
+
+
 /* MOSTRA TODOS OS ALUNOS E OS CURSOS QUE ESTÃO CADASTRADOS RESPECTIVAMENTES*/
 
 SELECT * FROM aluno_curso
@@ -67,9 +90,15 @@ SELECT aluno.nome, COUNT(curso.id) as "numero de cursos" FROM aluno_curso
 	JOIN aluno on aluno.id = aluno_curso.aluno_id
 GROUP BY 1;
 
-/* FILTRO DE BUSCA ONDE MOSTRARA VALORES DIFERENTES DE ID = 1 E COM VALORES OS QUAIS O NOME NÃO SE INICIA COM 'J' */
+/* UTILIZAÇÃO DE FILTRO, ONDE MOSTRARÁ VALORES DIFERENTES DE ID = 1 E COM VALORES OS QUAIS O NOME NÃO SE INICIA COM 'J' */
 
 SELECT nome FROM curso WHERE categoria_id <> 1 AND nome NOT LIKE 'J%';
+
+/* ATUALIZAÇÃO DE DADOS USANDO 'UPDATE' */
+
+UPDATE curso SET nome = 'POSTGRESQL' WHERE nome = 'POSTGRES';
+
+
 
 
 
