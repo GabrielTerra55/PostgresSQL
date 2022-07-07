@@ -1,0 +1,86 @@
+CREATE DATABASE CURSOS
+
+CREATE TABLE aluno(
+	id SERIAL PRIMARY KEY,
+	nome VARCHAR(255),
+	data_nascimento DATE,
+	cpf NUMERIC NOT NULL UNIQUE
+	
+);
+
+CREATE TABLE categoria(
+	id SERIAL PRIMARY KEY,
+	categoria VARCHAR(255)
+);
+
+CREATE TABLE curso(
+	id SERIAL PRIMARY KEY,
+	nome VARCHAR (255) UNIQUE,
+	categoria_id INTEGER,
+	FOREIGN KEY (categoria_id)
+	REFERENCES categoria(id)
+);
+
+/* CRIANDO UMA TABELA COM REFERENCIA A VALORES DE OUTRA TABELA (CHAVE ESTRANGEIRA) */
+
+CREATE TABLE aluno_curso (
+	aluno_id INTEGER NOT NULL,
+	curso_id INTEGER NOT NULL,
+	PRIMARY KEY (aluno_id, curso_id),
+	FOREIGN KEY (aluno_id) 
+	REFERENCES aluno(id),
+	FOREIGN KEY (curso_id) 
+	REFERENCES curso(id)
+);
+
+INSERT INTO aluno (nome,cpf,nascimento) VALUES(
+	'Josué Assis', 
+	'1999-07-12',
+	12950091610
+);
+
+
+INSERT INTO aluno (nome,data_nascimento,cpf) VALUES(
+	'Josué Ferreira',
+	'1998-03-10',
+	07659034073
+),(
+	'Edgar Marcedo',
+	'2001-03-01',
+	23866728085
+),(
+	'Tiago Nogueira',
+	'2002-09-20',
+	31151207020
+);
+
+
+INSERT INTO categoria VALUES 
+	(1,'FRONT-END'),(2,'PROGRAMAÇÃO'),
+	(3,'BANCO DE DADOS'),(4,'ADMINISTRAÇÃO');
+
+INSERT INTO curso VALUES 
+	(1,'Python',2),(2,'JAVA',2),(3,'HTML',1),
+	(4,'CSS',1),(5,'MYSQL',3),(6,'POSTGRES',3),
+	(7,'RUBY',2),(8,'Gestão de Projetos',4),
+	(9,'JavaScript',1);
+
+
+
+INSERT INTO aluno_curso VALUES
+(1,1),(1,6),(1,8);
+
+INSERT INTO aluno_curso VALUES
+(1,1),(1,6),(1,8),(2,2),(2,5),(3,3),(3,4),(3,8),(4,5),(4,7);
+
+/* MOSTRARA O NOME DO ALUNO COM SUA IDADE ATUAL */
+
+SELECT aluno.nome AS NOME, EXTRACT(YEAR FROM AGE (data_nascimento)) AS idade FROM aluno;
+
+/* FUNÇÃO DE CONVERSÃO DE TIMESTAMP PARA DATE */
+
+SELECT NOW () :: DATE ;
+
+SELECT TO_CHAR (NOW(),'DD/MM/YYYY);
+
+
