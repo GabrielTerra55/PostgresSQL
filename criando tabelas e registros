@@ -98,9 +98,11 @@ SELECT nome FROM curso WHERE categoria_id <> 1 AND nome NOT LIKE 'J%';
 
 UPDATE curso SET nome = 'POSTGRESQL' WHERE nome = 'POSTGRES';
 
+/* MOSTRA A CATEGORIA ONDE O NUMERO DE ALUNOS QUE FAZEM O CURSO É SUPERIOR A 2 */
 
-
-
-
-
+SELECT categoria FROM (
+	SELECT categoria.nome AS categoria, count(curso.id) AS numero_cursos FROM categoria
+		JOIN curso on curso.categoria_id = categoria.id
+GROUP BY 1
+) AS categoria_cursos WHERE numero_cursos >= 2 ;
 
