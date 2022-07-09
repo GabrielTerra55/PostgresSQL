@@ -1,6 +1,6 @@
 CREATE DATABASE CURSOS
 
-CREATE TABLE aluno(
+CREATE TABLE IF NOT EXIST aluno(
 	id SERIAL PRIMARY KEY,
 	nome VARCHAR(255),
 	data_nascimento DATE,
@@ -8,12 +8,12 @@ CREATE TABLE aluno(
 	
 );
 
-CREATE TABLE categoria(
+CREATE TABLE IF NOT EXIST categoria(
 	id SERIAL PRIMARY KEY,
 	categoria VARCHAR(255)
 );
 
-CREATE TABLE curso(
+CREATE TABLE IF NOT EXIST curso(
 	id SERIAL PRIMARY KEY,
 	nome VARCHAR (255) UNIQUE,
 	categoria_id INTEGER,
@@ -23,7 +23,7 @@ CREATE TABLE curso(
 
 /* CRIANDO UMA TABELA COM REFERENCIA A VALORES DE OUTRA TABELA (CHAVE ESTRANGEIRA) */
 
-CREATE TABLE aluno_curso (
+CREATE TABLE IF NOT EXIST aluno_curso (
 	aluno_id INTEGER NOT NULL,
 	curso_id INTEGER NOT NULL,
 	PRIMARY KEY (aluno_id, curso_id),
@@ -82,5 +82,11 @@ SELECT aluno.nome AS NOME, EXTRACT(YEAR FROM AGE (data_nascimento)) AS idade FRO
 SELECT NOW () :: DATE ;
 
 SELECT TO_CHAR (NOW(),'DD/MM/YYYY);
+
+/* FUNÇÃO COM CONCATENAÇÃO E EXTRASÃO DE INFORMAÇÕES USANDO NOVAMENTE O 'EXTRACT' */
+
+SELECT (nome||' com idade de '||EXTRACT(YEAR FROM AGE (data_nascimento)) ||' anos') AS "APRESENTAÇÃO" FROM aluno;
+
+
 
 
