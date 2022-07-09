@@ -106,3 +106,10 @@ SELECT categoria FROM (
 GROUP BY 1
 ) AS categoria_cursos WHERE numero_cursos >= 2 ;
 
+/* QUERY SQL PARA RENOMEAÇÂO DE TABELA */
+
+ALTER TABLE aluno RENAME to alunos;
+
+/* QUERY SQL PARA RENOMEAÇÂO DE COLUNA DE UMA TABELA */
+
+ALTER TABLE aluno RENAME cpf to DOCUMENTO_CPF;
