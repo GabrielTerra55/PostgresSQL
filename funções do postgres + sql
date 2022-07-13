@@ -87,6 +87,66 @@ SELECT TO_CHAR (NOW(),'DD/MM/YYYY);
 
 SELECT (nome||' com idade de '||EXTRACT(YEAR FROM AGE (data_nascimento)) ||' anos') AS "APRESENTAÇÃO" FROM aluno;
 
+                                   /* ESTRURA BASICA DE FUNÇÃO SQL */
+		 /* FUNÇÃO PARA RETORNAR O DOBRO DOS VALORES DA COLUNA VALORES DA TABELA CURSO */
 
+CREATE OR REPLACE FUNCTION teste_inteiro (curso) RETURNS NUMERIC AS $$
+	SELECT $1.valor * 2 AS "Dobro"
+$$ LANGUAGE sql;
 
+SELECT nome, valor, teste_inteiro (curso) AS "dobro" FROM curso;
 
+/* TAMBÉM É POSSÍVEL USAR O 'RETURN VOID' PARA CASO NÃO PRECISE RETORNAR VALOR' /*
+
+	/* FUNÇÕES EM PLPGSQL /*
+/* EXEMPLO DE CRIAÇÃO DE VARIAVEL INTERNA */
+
+CREATE FUNCTION primeira_pl() RETURNS INTEGER AS $$
+	DECLARE
+		exemplo_var INTEGER DEFAULT(3);
+	BEGIN
+		RETURN exemplo_var;
+	END;
+$$ LANGUAGE PLPGSQL;
+
+SELECT primeira_pl();
+
+/* ESTRUTURA QUE RETORNARA VALORES OS QUAIS SEJAM MENORES DO QUE O VALOR PASSADO */
+
+CREATE FUNCTION valor_baixo (valor_baixo NUMERIC(5,2)) RETURNS SETOF curso AS $$
+	BEGIN
+		RETURN QUERY SELECT * FROM curso
+		WHERE valor < valor_baixo;
+	END;
+$$ LANGUAGE PLPGSQL;
+
+/* USANDO UMA ESTRUTURA DE SELEÇÃO */
+
+CREATE OR REPLACE FUNCTION demasiado_valor (curso curso,valor_escolhido NUMERIC) RETURNS VARCHAR AS $$
+	BEGIN
+		IF curso.valor > valor_escolhido THEN
+			RETURN 'valor não acessivel';
+		ELSEIF curso.valor <= valor_escolhido THEN
+			RETURN 'valor acessivel';
+		ELSE
+			RETURN 'ERRO INESPERADO';
+		END IF;
+	END;
+$$ LANGUAGE PLPGSQL;
+
+SELECT nome,valor, demasiado_valor(curso,30.10) FROM curso ORDER BY demasiado_valor;
+
+*/ OU USANDO CASE */
+
+CREATE OR REPLACE FUNCTION demasiado_valor (curso curso,valor_escolhido NUMERIC) RETURNS VARCHAR AS $$
+	BEGIN
+		CASE  
+			WHEN curso.valor > valor_escolhido THEN
+				RETURN 'valor não acessivel';
+			WHEN curso.valor <= valor_escolhido THEN
+				RETURN 'valor acessivel';
+		END CASE;
+	END;
+$$ LANGUAGE PLPGSQL;
+
+SELECT nome,valor, demasiado_valor(curso,30.10) FROM curso ORDER BY demasiado_valor;
