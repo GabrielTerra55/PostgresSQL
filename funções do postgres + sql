@@ -46,22 +46,6 @@ CREATE TABLE log_instrutor (
 	informação VARCHAR (255)
 );
 
-INSERT INTO instrutor (nome, salario) VALUES(
-	'Ademir Silva',
-	2000
-),(
-	'Alexandro Alves',
-	1500
-),(
-	'Ricardo Milos',
-	2200
-),(
-	'Andre Vieira',
-	1850
-),(
-	'Anderson Silva',
-	1920
-);
 
 INSERT INTO aluno (nome,cpf,nascimento) VALUES(
 	'Josué Assis', 
@@ -216,5 +200,22 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER cria_log_instrutores AFTER INSERT ON instrutor
 	FOR EACH ROW EXECUTE FUNCTION cria_instrutor();
 
+INSERT INTO instrutor (nome, salario) VALUES(
+	'Ademir Silva',
+	2000
+),(
+	'Alexandro Alves',
+	1500
+),(
+	'Ricardo Milos',
+	2200
+),(
+	'Andre Vieira',
+	1850
+),(
+	'Anderson Silva',
+	1920
+);
 
+SELECT * FROM log_instrutor;
 
