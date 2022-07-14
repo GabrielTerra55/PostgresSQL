@@ -39,6 +39,13 @@ CREATE TABLE instrutor (
 	salario NUMERIC
 );
 
+/* ESSA TABELA RECEBERA DADOS ATRAVÉS DE UMA FUNÇÃO VIA TRIGGER */
+
+CREATE TABLE log_instrutor (
+	id SERIAL PRIMARY KEY,
+	informação VARCHAR (255)
+);
+
 INSERT INTO instrutor (nome, salario) VALUES(
 	'Ademir Silva',
 	2000
@@ -173,3 +180,41 @@ CREATE OR REPLACE FUNCTION demasiado_valor (curso curso,valor_escolhido NUMERIC)
 $$ LANGUAGE PLPGSQL;
 
 SELECT nome,valor, demasiado_valor(curso,30.10) FROM curso ORDER BY demasiado_valor;
+
+/* FUNÇÃO PARA RECEBER UM RELATORIO SOBRE A RELAÇÃO SALARIAL DOS INSTRUORES EM UMA OUTRA TABELA, USANDO TRIGGER PLPGSQL */
+
+CREATE OR REPLACE FUNCTION cria_instrutor() RETURNS TRIGGER AS $$
+	DECLARE
+		media_salarial DECIMAL;
+		instrutores_recebem_menos INTEGER DEFAULT 0;
+		total_de_instrutores INTEGER DEFAULT 0;
+		salario DECIMAL;
+		percentual DECIMAL (5,2);
+	BEGIN
+		SELECT AVG(instrutor.salario) INTO media_salarial FROM instrutor WHERE id <> NEW.id;
+		
+		IF NEW.salario > media_salarial THEN
+			INSERT INTO log_instrutor (informação) VALUES (NEW.nome || ' recebe acima da mèdia');
+		END IF;	
+		
+		FOR salario IN SELECT instrutor.salario FROM instrutor WHERE id <> NEW.id LOOP
+			total_de_instrutores := total_de_instrutores + 1;
+			
+			IF NEW.salario > salario THEN
+				instrutores_recebem_menos := instrutores_recebem_menos + 1;
+			END IF;
+		END LOOP;
+		
+		percentual = instrutores_recebem_menos :: DECIMAL / total_de_instrutores :: DECIMAL * 100;
+		
+		INSERT INTO log_instrutor (informação)
+			VALUES (NEW.nome || ' recebe mais do que ' || percentual || '% da grade de instrutores ');
+		RETURN NEW;
+	END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER cria_log_instrutores AFTER INSERT ON instrutor
+	FOR EACH ROW EXECUTE FUNCTION cria_instrutor();
+
+
+
