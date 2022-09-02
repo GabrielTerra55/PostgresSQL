@@ -87,6 +87,10 @@ INSERT INTO aluno_curso VALUES
 INSERT INTO aluno_curso VALUES
 (1,1),(1,6),(1,8),(2,2),(2,5),(3,3),(3,4),(3,8),(4,5),(4,7);
 
+/* ALTERANDO VALORES DE UMA TABELA */
+
+UPDATE aluno SET cpf ='12950091611' where nome='Edgar Marcedo';
+
 /* MOSTRARA O NOME DO ALUNO COM SUA IDADE ATUAL */
 
 SELECT aluno.nome AS NOME, EXTRACT(YEAR FROM AGE (data_nascimento)) AS idade FROM aluno;
