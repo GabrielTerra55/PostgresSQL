@@ -16,7 +16,7 @@ CREATE TABLE categoria(
 );
 
 CREATE TABLE curso(
-	id SERIAL PRIMARY KEY,
+	id INTEGER PRIMARY KEY,
 	nome VARCHAR (255) UNIQUE,
 	categoria_id INTEGER,
 	FOREIGN KEY (categoria_id)
