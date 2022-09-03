@@ -35,7 +35,7 @@ CREATE TABLE aluno_curso (
 	REFERENCES curso(id)
 );
 
-INSERT INTO aluno (nome,cpf,nascimento) VALUES(
+INSERT INTO aluno (nome,data_nascimento,cpf) VALUES(
 	'Josué Assis', 
 	'1999-07-12',
 	12950091610
